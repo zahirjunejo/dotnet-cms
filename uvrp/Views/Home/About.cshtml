@@ -1,0 +1,230 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+
+<div class="banner inner-page-banner" style="background: url('@Url.Content("~/Content/img/banner_bg2.svg")') no-repeat center;">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="text-right section-editBtn for-banner">
+                <a href="/Templates/GoEdit?pageName=@Request.Url.ToString().Split('/').Last()&section=Banner" class="btn btn-link btn-sm">
+                    <i class="fa fa-pencil-square fa-lg"></i>
+                </a>
+        </div>
+    }
+    <div class="layer"></div>
+    <div id="headerText" class="content">
+
+    </div>
+       
+</div>
+<div id="section1" class="common-section">
+     @if (User.Identity.IsAuthenticated)
+     {
+         <div class="text-right section-editBtn">
+                 <a href="/Templates/GoEdit?pageName=@Request.Url.ToString().Split('/').Last()&section=Section1" class="btn btn-link btn-sm">
+                     <i class="fa fa-pencil-square fa-lg"></i>
+                 </a>
+         </div>
+     }
+    <div class="container">
+
+    </div>
+</div>
+
+<div id="section2" class="common-section bg-section" style="background: url('@Url.Content("~/Content/img/bg2.svg")') no-repeat center;">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="text-right section-editBtn">
+                    <a href="/Templates/GoEdit?pageName=@Request.Url.ToString().Split('/').Last()&section=Section2" class="btn btn-link btn-sm">
+                        <i class="fa fa-pencil-square fa-lg"></i>
+                    </a>
+            </div>
+        }
+    <div class="container">
+ 
+    </div>
+</div>
+
+<div class="common-section">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="text-right section-editBtn">
+                <a href="/Teams" class="btn btn-link btn-sm">
+                    <i class="fa fa-pencil-square fa-lg"></i>
+                </a>
+        </div>
+    }
+    <div class="container">
+        <div class="section-heading">
+            <h2>Our Team</h2>
+        </div>
+        <div id="team" class="row">
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-item">
+                    <div class="imgDiv teamImg">
+                        <img src="@Url.Content("~/Content/img/team1.svg")" alt="icon" class="card-img-top"/>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            John Doe
+                        </h3>
+                        <p>CEO</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-item">
+                    <div class="imgDiv teamImg">
+                        <img src="@Url.Content("~/Content/img/team2.svg")" alt="icon" class="card-img-top"/>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            John Doe
+                        </h3>
+                        <p>President</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-item">
+                    <div class="imgDiv teamImg">
+                        <img src="@Url.Content("~/Content/img/team3.svg")" alt="icon" class="card-img-top"/>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            John Doe
+                        </h3>
+                        <p>Business Advisor</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-item">
+                    <div class="imgDiv teamImg">
+                        <img src="@Url.Content("~/Content/img/team4.svg")" alt="icon" class="card-img-top"/>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            John Doe
+                        </h3>
+                        <p>Developer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-item">
+                    <div class="imgDiv teamImg">
+                        <img src="@Url.Content("~/Content/img/team1.svg")" alt="icon" class="card-img-top"/>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            John Doe
+                        </h3>
+                        <p>Marketing Manager</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card team-item">
+                    <div class="imgDiv teamImg">
+                        <img src="@Url.Content("~/Content/img/team1.svg")" alt="icon" class="card-img-top"/>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            John Doe
+                        </h3>
+                        <p>Designer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loader" class="overlay">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetInnerPageContent/About",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response){
+                response.forEach(function(item, index){
+                    if(item.Section == "Banner"){
+                        $('.banner.inner-page-banner').css("background-image", `url(/Content/img/${item.Image})`)                        
+                        $('#headerText').html('');
+                        $('#headerText').append(item.Content);
+                    } else if(item.Section == "Section1"){
+                        $('#section1').find('.container').html('');
+                        $('#section1').find('.container').append(item.Content);
+                        
+                        if(item.Image){
+                            $('#section1').css("background-image", `url(/Content/img/${item.Image})`)
+                        }
+                        
+                        
+                    } else if(item.Section == "Section2"){
+                        $('#section2').find('.container').html('');
+                        $('#section2').find('.container').append(item.Content);
+                        
+                        if(item.Image){
+                            $('#section2').css("background-image", `url(/Content/img/${item.Image})`)
+                        }
+                    }
+                   
+                });
+                
+            },
+            failure: function(response) {
+                console.log(response);
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+    
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetTeams",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response){
+                console.log(response);
+                if(response.length > 0){
+                    $('#team').html('');
+                    response.forEach( function(item, index){
+                        $('#team').append(`
+                               <div class="col-md-6 col-lg-4">
+                                    <div class="card team-item">
+                                        <div class="imgDiv teamImg">
+                                            <img src="/Content/img/${item.Image}" alt="icon" class="card-img-top" onerror=this.src="/Content/img/team-placeholder.png" />
+                                        </div>
+                                        <div class="card-body">
+                                            <h3 class="card-title">
+                                                ${item.Name}
+                                            </h3>
+                                            <p>${item.Designation}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                        `);
+                    });
+                }
+                $('#loader').hide()
+            },
+            failure: function(response) {
+                console.log(response);
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+    
+    });
+</script>

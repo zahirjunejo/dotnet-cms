@@ -1,0 +1,191 @@
+﻿@model uvrp.Models.HomePageBannerModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2>Create</h2>
+<input type="hidden" id="addClass" value="1"/>
+@using (Html.BeginForm("Create", "Banners", FormMethod.Post, htmlAttributes: new {enctype = "multipart/form-data"}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Banner</h4>
+        <div class="col-12">
+            <div class="alert alert-danger" role="alert">
+
+            </div>
+        </div>
+        <hr/>
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new {htmlAttributes = new {@class = "form-control outline", required = "required"}})
+                @Html.ValidationMessageFor(model => model.Title, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-5">Banner image (recommended size: 800x400 px)</label>
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.TextBox("Upload", "", new {type = "file", @class = "form-control outline lg"})
+                </div>
+                @Html.HiddenFor(model => model.ImageData)
+                @Html.ValidationMessageFor(model => model.Upload, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AltText, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AltText, new {htmlAttributes = new {@class = "form-control outline"}})
+                @Html.ValidationMessageFor(model => model.AltText, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Abstract, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.Abstract)
+                <textarea class="form-control outline" class="form-control outline" id="editor"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.IsActive)
+                    @Html.ValidationMessageFor(model => model.IsActive, "", new {@class = "text-danger"})
+                </div>
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.UploadFileName)
+
+        <div class="row">
+            <div class="col-12 text-right">
+                @Html.ActionLink("Back to List", "Index", "", new {@class = "btn btn-outline-primary"})
+                <input type="submit" onclick="validate()" value="Create" class="btn btn-primary "/>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="deleteModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Uploaded image</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="Image1" class="img-fluid" src="" alt=""/>
+                    <canvas id="canvas" style="display: none"></canvas>
+                </div>
+                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+
+    var editor = CKEDITOR.replace("editor");
+    
+    
+    editor.on('change', function(e){
+        $('#Abstract').val(editor.getData());
+    })
+    
+    $('.alert').hide();
+    function validate() {
+
+        $('.alert').empty();
+        $('.alert').show();
+
+        if ($('#Title').val() == "") {
+            $('.alert').append("Title missing.");
+            return;
+        }
+
+    }
+    
+    
+</script>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.9/js/jquery.Jcrop.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.9/css/jquery.Jcrop.css">
+<script type="text/javascript">
+    var dollarSign = $.noConflict(true);
+</script>
+
+
+<script type="text/javascript">
+    
+    let maxWidth = 800;
+    let maxHeight = 400;
+    
+    dollarSign(document).ready(function () {
+            dollarSign('#Upload').change(function () {
+                
+                var reader = new FileReader();
+               
+                    reader.onload = function (e) {
+                        dollarSign('#Image1').load(function() {
+                            
+                            let height = $('#Image1')[0].naturalHeight;
+                            let width = $('#Image1')[0].naturalWidth;
+                            
+                            if(height > maxHeight || width > maxWidth ){
+                               $('#deleteModal').modal("show");
+                                setTimeout(function(){
+                                    
+                                    dollarSign('#Image1').Jcrop({
+                                        trueSize: [$('#Image1')[0].naturalWidth, $('#Image1')[0].naturalHeight],
+                                        onChange: SetCoordinates,
+                                        onSelect: SetCoordinates,
+                                        allowResize: false,
+                                        allowSelect: false,
+                                        allowMove: true,
+                                        setSelect: [50,50,maxWidth,maxHeight]
+                                    });
+                                    
+                                }, 100);
+                                
+                            }
+                        });
+                        
+                        dollarSign('#Image1').attr("src", e.target.result);
+                    }
+                    
+                    reader.readAsDataURL(dollarSign(this)[0].files[0]);
+                
+            });
+    
+        });
+        
+        
+        function SetCoordinates(c) {
+            var canvas = dollarSign("#canvas")[0];
+            var context = canvas.getContext('2d');
+            var img = new Image();
+            img.onload = function () {
+                canvas.height = c.h;
+                canvas.width = c.w;
+                context.drawImage(img, c.x, c.y, c.w, c.h, 0, 0, c.w, c.h);
+                dollarSign('#ImageData').val(canvas.toDataURL());
+            };
+            img.src = dollarSign('#Image1').attr("src");
+        };
+</script>

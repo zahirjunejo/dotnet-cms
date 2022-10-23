@@ -1,0 +1,62 @@
+﻿@model uvrp.Posts
+
+@{
+    ViewBag.Title = "ViewPost";
+}
+
+
+<div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    @Html.HiddenFor(model => model.Id)
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+    </dl>
+
+    <br />
+    <h2>@Html.DisplayFor(model => model.Title)</h2>
+    <br />
+
+    <div id="ContentDiv"></div>
+
+</div>
+
+
+<script type="text/javascript">
+    $.ajax({
+        type: "GET",
+        url: "/Home/GetPostContentById/" + $("#Id").val(),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
+            $("#ContentDiv").html(response);
+        },
+        failure: function (response) {
+            console.log(response);
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+</script>

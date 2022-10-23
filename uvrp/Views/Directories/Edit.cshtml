@@ -1,0 +1,159 @@
+﻿@model uvrp.Directory
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+<input type="hidden" id="addClass" value="1" />
+<div class="mb-4">
+    <h2>Edit Directory</h2>
+</div>
+
+@using (Html.BeginForm("Edit", "Directories", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="row align-items-center">
+    <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+
+        </div>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label text-capitalize">Organization Name</label>
+            @Html.EditorFor(model => model.OrganizationName, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.OrganizationName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Industry, htmlAttributes: new { @class = "control-label text-capitalize" })
+
+            @Html.DropDownListFor(model => model.Industry, ViewBag.IndustryList as SelectList, new { @class = "form-control outline" })
+            @Html.ValidationMessageFor(model => model.Industry, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Logo, htmlAttributes: new { @class = "control-label text-capitalize" })
+            @Html.EditorFor(model => model.Logo, new { htmlAttributes = new { style = "color:transparent", @type = "file", @class = "lg form-control outline" } })
+            @Html.ValidationMessageFor(model => model.Logo, "", new { @class = "text-danger" })
+            @Html.DisplayFor(model => model.Logo)
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Website, htmlAttributes: new { @class = "control-label text-capitalize" })
+
+            @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.Website, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label text-capitalize">Contact Address</label>
+            @Html.EditorFor(model => model.ContactAddress, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.ContactAddress, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label text-capitalize">Phone Number</label>
+            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label text-capitalize">Point Of Contact</label>
+            @Html.EditorFor(model => model.PointOfContact, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.PointOfContact, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label text-capitalize">Email Address</label>
+            @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.EditorFor(model => model.IsAddressPrivate, new { htmlAttributes = new { @class = "" } })
+            <label class="control-label text-capitalize">Is Address Private</label>
+            @Html.ValidationMessageFor(model => model.IsAddressPrivate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.EditorFor(model => model.IsPhonePrivate, new { htmlAttributes = new { @class = "" } })
+            <label class="control-label text-capitalize">Is Phone Private</label>
+            @Html.ValidationMessageFor(model => model.IsPhonePrivate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.EditorFor(model => model.IsEmailPrivate, new { htmlAttributes = new { @class = "" } })
+            <label class="control-label text-capitalize">Is Email Private</label>
+            @Html.ValidationMessageFor(model => model.IsEmailPrivate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-12 text-right">
+            <input type="submit" onclick="validate()" value="Save" class="btn btn-primary " />
+            @Html.ActionLink("Back to List", "Index", "", new { @class = "btn btn-outline-primary" })
+        </div>
+    </div>
+}
+
+<script>
+        $('.alert').hide();
+        function validate() {
+
+            $('.alert').empty();
+            $('.alert').show();
+
+            if ($('#OrganizationName').val() == "") {
+                $('.alert').append("Organization name missing.");
+                return;
+            }
+
+            if ($('#Industry').val() == "") {
+                $('.alert').append("Industry missing.");
+                return;
+            }
+
+
+            if ($('#Website').val() == "") {
+                $('.alert').append("Website missing.");
+                return;
+            }
+
+            if ($('#ContactAddress').val() == "") {
+                $('.alert').append("Address missing.");
+                return;
+            }
+
+            if ($('#PhoneNumber').val() == "") {
+                $('.alert').append("Phone number missing.");
+                return;
+            }
+
+            if ($('#PointOfContact').val() == "") {
+                $('.alert').append("Person name missing.");
+                return;
+            }
+
+            if ($('#EmailAddress').val() == "") {
+                $('.alert').append("Email missing.");
+                return;
+            }
+
+        }
+</script>

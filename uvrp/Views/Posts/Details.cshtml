@@ -1,0 +1,233 @@
+﻿@model uvrp.Posts
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<input type="hidden" id="addClass" value="1"/>
+
+<div class="container">
+    <div class="mb-3">
+        <h2>Detail Post</h2>
+    </div>
+    <div class="row align-items-center">
+        @Html.HiddenFor(model => model.Id)
+        <div class="col-12 mb-3">
+            <h3>
+                @Html.DisplayFor(model => model.Title)
+            </h3>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">@Html.DisplayNameFor(model => model.Category)</h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.Category)
+            </div>
+
+        </div>
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">@Html.DisplayNameFor(model => model.CreationDate)</h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.CreationDate)
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">
+                @Html.DisplayNameFor(model => model.EventStartDate)
+            </h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.EventStartDate)
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">
+                @Html.DisplayNameFor(model => model.EventEndDate)
+            </h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.EventEndDate)
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">
+                @Html.DisplayNameFor(model => model.EventLocation)
+            </h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.EventLocation)
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">
+                @Html.DisplayNameFor(model => model.Website)
+            </h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.Website)
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">
+                @Html.DisplayNameFor(model => model.Organization)
+            </h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.Organization)
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">
+                @Html.DisplayNameFor(model => model.EventContact)
+            </h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.EventContact)
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">
+                @Html.DisplayNameFor(model => model.Email)
+            </h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.Email)
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <h5 class="mb-0">
+                @Html.DisplayNameFor(model => model.Phone)
+            </h5>
+            <div class="badge mt-2" style="background: lightgrey;">
+                @Html.DisplayFor(model => model.Phone)
+            </div>
+        </div>
+
+
+        <div class="col-md-12 mb-3">
+            @Html.HiddenFor(model => model.Content)
+        </div>
+    </div>
+    <div id="ContentDiv">
+    </div>
+    <form action="/" method="post">
+        <div class="row align-items-center">
+            <div class="col-12">
+                <h3>Add comment</h3>
+            </div>
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+
+                </div>
+            </div>
+            <div class="col-md-6 form-group">
+                <input type="text" class="form-control outline" id="comment_name" placeholder="name"/>
+            </div>
+            <div class="col-md-6 form-group">
+                <input type="text" class="form-control outline" id="comment_email" placeholder="email"/>
+            </div>
+            <div class="col-md-12 form-group">
+                <textarea id="comment_content" class="form-control outline" placeholder="Say something."></textarea>
+            </div>
+            <div class="col-12 form-group text-right">
+                <button class="btn btn-primary" type="button" id="comment_button">Submit</button>
+            </div>
+        </div>
+    </form>
+    <div id="Comments">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+        $('#ContentDiv').html($('#Content').val());
+        $('.alert').hide();
+        var formdata = new FormData();
+
+        function getComments() {
+            $.ajax({
+                type: "GET",
+                url: `/Posts/GetComments/${$('#Id').val()}`,
+                success: function (response) {
+                    $('#Comments').empty();
+                    $('.alert').hide();
+                    $('.alert').empty();
+                    response.forEach(function (item, index) {
+                        let commentTemplate = `<div>
+                                                <b>${item.Commentator}</b>
+                                                <p>${item.Content}</p>
+                                                </div>`;
+                        $('#Comments').append(commentTemplate);
+                        
+                    });
+                },
+                failure: function (response) {
+                    console.log(response);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+
+        function getFormData() {
+            formdata.append('Commentator', $('#comment_name').val())
+            formdata.append('EmailAddress', $('#comment_email').val());
+            formdata.append('Content', $('#comment_content').val());
+            formdata.append('PostId', $('#Id').val());
+        }
+
+        function postFormData() {
+            $('.alert').empty();
+            $('.alert').show();
+
+            if ($('#comment_name').val() == "") {
+                $('.alert').append("Name missing.");
+                return;
+            }
+
+            if ($('#comment_email').val() == "") {
+                $('.alert').append("Email missing.");
+                return;
+            }
+
+            if ($('#comment_content').val() == "") {
+                $('.alert').append("Comment missing.");
+                return;
+            }
+
+            if (formdata != null) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Posts/PostComment",
+                    data: formdata,
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    success: function (response) {
+                        console.log(response);
+                        if (response.Id) {
+                            getComments();
+                            formdata = new FormData();
+                        }
+                    },
+                    failure: function (response) {
+                        console.log(response);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+            }
+        }
+
+        getComments();
+
+        $('#comment_button').click(function () {
+            getFormData();
+            postFormData();
+        });
+
+
+    });
+
+</script>

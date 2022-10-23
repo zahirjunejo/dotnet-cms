@@ -1,0 +1,50 @@
+﻿@model uvrp.Contacts
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+<input type="hidden" id="addClass" value="1" />
+<div class="mb-3">
+    <h2>Message Detail</h2>
+</div>
+
+<div class="row align-items-center">
+    <div class="col-md-6 mb-3">
+        <h4 class="mb-0">
+            Full Name
+        </h4>
+        @Html.DisplayFor(model => model.FullName)
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <h4 class="mb-0">
+            Last Name
+        </h4>
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+    <div class="col-md-6 mb-3">
+        <h4 class="mb-0">
+            Phone Number
+        </h4>
+        @Html.DisplayFor(model => model.PhoneNumber)
+    </div>
+    <div class="col-md-6 mb-3">
+        <h4 class="mb-0">
+            Email
+        </h4>
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <h4 class="mb-0">
+            @Html.DisplayNameFor(model => model.Content)
+        </h4>
+        @Html.DisplayFor(model => model.Content)
+      </div>
+    </div>
+<div class="row text-right">
+    <div class="col-12">
+        @Html.ActionLink("Back to List", "Index", "", new { @class = "btn btn-outline-primary" })
+    </div>
+</div>

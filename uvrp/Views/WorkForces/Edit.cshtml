@@ -1,0 +1,76 @@
+﻿@model uvrp.Models.WorkForceViewModel
+
+@{
+    ViewBag.Title = "Edit"; Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+<input type="hidden" id="addClass" value="1" />
+<div class="mb-4">
+    <h2>Edit Workforce</h2>
+</div>
+
+@using (Html.BeginForm("Edit", "WorkForces", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+<div class="row align-items-center">
+    <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+
+        </div>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label text-capitalize">Priority Number</label>
+
+            @Html.EditorFor(model => model.PriorityNumber, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.PriorityNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label text-capitalize" })
+
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label text-capitalize">Download File</label>
+                <input type="file" class="form-control outline lg" style="color:transparent;" name="DownloadFile">
+                <label id="fileNameLbl">@Model.FileName</label>
+                @ViewBag.UploadMessage
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-right">
+            @Html.ActionLink("Back to List", "Index", "", new { @class = "btn btn-outline-primary" })
+            <input type="submit" onclick="validate()" value="Save" class="btn btn-primary " />
+        </div>
+    </div>
+}
+<script>
+        $('.alert').hide();
+        function validate() {
+
+            $('.alert').empty();
+            $('.alert').show();
+
+            if ($('#PriorityNumber').val() == "") {
+                $('.alert').append("Priority number missing.");
+                return;
+            }
+
+            if ($('#Title').val() == "") {
+                $('.alert').append("Title missing.");
+                return;
+            }
+
+            $('.alert').hide();
+
+
+        }
+</script>

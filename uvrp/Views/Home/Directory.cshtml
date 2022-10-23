@@ -1,0 +1,165 @@
+﻿@model IEnumerable<uvrp.Directory>
+@{
+    ViewBag.Title = "Directory";
+}
+<div class="banner inner-page-banner" style="background: url('@Url.Content("~/Content/img/Bitmap.svg")') no-repeat center;">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="text-right section-editBtn for-banner">
+                <a href="/Templates/GoEdit?pageName=@Request.Url.ToString().Split('/').Last()&section=Banner" class="btn btn-link btn-sm">
+                    <i class="fa fa-pencil-square fa-lg"></i>
+                </a>
+        </div>
+    }
+    <div class="layer"></div>
+    <div id="headerText" class="content">
+
+    </div>
+</div>
+<div class="py-4 dark-section">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-9">
+                @using (Html.BeginForm())
+                {
+                    <div class="input-group search-input-group">
+                        @Html.TextBox("SearchString", null, new
+                        {
+                            placeholder = "Search by org name",
+                            @class = "form-control"
+                        })
+                        <div class="input-group-append">
+                            <input type="submit" class="btn btn-default" value="Search" />
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="common-section">
+    @if (User.Identity.IsAuthenticated)
+         {
+             <div class="text-right section-editBtn">
+                     <a href="/Directories" class="btn btn-link btn-sm">
+                         <i class="fa fa-pencil-square fa-lg"></i>
+                     </a>
+             </div>
+         }
+    <div class="container">
+        <div class="section-heading">
+            <h2>Directory Listings</h2>
+
+            Sort by:
+            @Html.ActionLink("Organization", "Directory", new {sortOrder = ViewBag.OrganizationSortParm}) |
+            @Html.ActionLink("Industry", "Directory", new {sortOrder = ViewBag.IndustrySortParm})
+            <br/>
+
+            <br/>
+
+
+        </div>
+        <div id="directoryListingDiv" class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card directory-item border-0">
+                        <div class="card-body">
+                            <div class="imgDiv directoryImg">
+                                <img src="/Content/img/@item.Logo" alt="directory-logo"/>
+                            </div>
+                            <h5 class="card-title">
+                                <a href="#" target="_blank">@item.OrganizationName</a>
+                            </h5>
+                            <p>
+                                Industry: @item.Industry
+                            </p>
+                            <p class="font-raleway">
+                                <a href=@item.Website target="_blank">@item.Website</a>
+                            </p>
+                            @if (!item.IsAddressPrivate)
+                            {
+                                <p>
+                                    Address: @item.ContactAddress
+                                </p>
+                            }
+
+                            @if (!item.IsPhonePrivate)
+                            {
+                                <p>
+                                    Phone: @item.PhoneNumber
+                                </p>
+                            }
+
+                            <p>
+                                POC: @item.PointOfContact
+                            </p>
+
+                            @if (!item.IsEmailPrivate)
+                            {
+                                <p class="font-raleway">
+                                    <a href=@item.EmailAddress target="_blank">
+                                        Email: @item.EmailAddress
+                                    </a>
+                                </p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="loader" class="overlay">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetInnerPageContent/Directory",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response){
+                response.forEach(function(item, index){
+                    if(item.Section == "Banner"){
+                        $('.banner.inner-page-banner').css("background-image", `url(/Content/img/${item.Image})`)                        
+                        $('#headerText').html('');
+                        $('#headerText').append(item.Content);
+                    } else if(item.Section == "Section1"){
+                        $('#section1').find('.container').html('');
+                        $('#section1').find('.container').append(item.Content);
+                        
+                        if(item.Image){
+                            $('#section1').css("background-image", `url(/Content/img/${item.Image})`)
+                        }
+                        
+                        
+                    } else if(item.Section == "Section2"){
+                        $('#section2').find('.container').html('');
+                        $('#section2').find('.container').append(item.Content);
+                        
+                        if(item.Image){
+                            $('#section2').css("background-image", `url(/Content/img/${item.Image})`)
+                        }
+                    }
+                   
+                });
+                $('#loader').hide()
+            },
+            failure: function(response) {
+                console.log(response);
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+    });
+</script>

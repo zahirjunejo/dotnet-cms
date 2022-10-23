@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Home page";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2>Home page</h2>
+<input type="hidden" id="addClass" value="1" />
+
+<ul class="listing">
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Banners", "Index", "Banners")
+    </li>
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Home page content", "Index", "HomePageContents")
+    </li>
+</ul>

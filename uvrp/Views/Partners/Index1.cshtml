@@ -1,0 +1,40 @@
+﻿@model IEnumerable<uvrp.Partners>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+<input type="hidden" id="addClass" value="1" />
+<div class="row align-items-center mb-3 mb-lg-4">
+    <div class="col-6">
+        <h2>Partners</h2>
+    </div>
+    <div class="col-6 text-right">
+        @Html.ActionLink("Create New", "Add", "Add", new { @class = "btn btn-outline-primary btn-md" })
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Logo)
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Logo)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
+                    </td>
+                </tr>
+            }
+            </tbody>
+    </table>
+    </div>

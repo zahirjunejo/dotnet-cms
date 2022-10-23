@@ -1,0 +1,56 @@
+﻿@model System.Web.Mvc.HandleErrorInfo  
+  
+@{
+    Layout = null;
+    ViewBag.Title = "Error";  
+}  
+
+<div style="background-color: #F5F5DC; color: black; min-height: 170px; border-bottom:20px solid #A52A2A; border-top:20px solid #A52A2A">  
+    <div id="section1" style=" padding:20px;">  
+        <h3>  
+            Application Error:</h3>  
+        <h4>  
+            Sorry, an error occurred while processing your request.  
+        </h4>  
+        <h6>@Html.ActionLink("Go Back To Home Page", "Index", "Home")</h6>  
+        <br />  
+        <br />  
+    </div>  
+</div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" >
+
+   $.ajax({
+       type: "GET",
+       url: "/Home/GetInnerPageContent/Error",
+       contentType: "application/json; charset=utf-8",
+       dataType: "json",
+       success: function (response){
+           
+           response.forEach(function(item, index){
+               if(item.Section == "HeaderImage"){
+                   $('.banner.inner-page-banner').css("background-image", `url(/Content/img/${item.Content})`)
+               } 
+               else if(item.Section == "HeaderText"){
+                   $('#headerText').html('');
+                   $('#headerText').append(item.Content);
+               } else if(item.Section == "Section1"){
+                   $('#section1').html('');
+                   $('#section1').append(item.Content);
+               } else if(item.Section == "Section2"){
+                   $('#section2').html('');
+                   $('#section2').append(item.Content);
+               }
+               
+               
+           });
+           
+       },
+       failure: function(response) {
+           console.log(response);
+       },
+       error: function(response){
+           console.log(response);
+       }
+   });
+</script>

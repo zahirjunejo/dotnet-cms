@@ -1,0 +1,103 @@
+﻿@model IEnumerable<uvrp.WorkForce>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+<input type="hidden" id="addClass" value="1" />
+<div class="row align-items-center mb-3 mb-lg-4">
+    <div class="col-6">
+        <h2>Work Force</h2>
+    </div>
+    <div class="col-6 text-right">
+        @Html.ActionLink("Create New", "Create", "Create", new { @class = "btn btn-outline-primary btn-md" })
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.ActionLink("Priority", "Index", new {sortOrder = ViewBag.PrioritySortParm})
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.ActionLink("Date", "Index", new {sortOrder = ViewBag.DateSortParm})
+            </th>
+            <th>
+                Download File Name
+            </th>
+            <th style="min-width:250px;">Action</th>
+        </tr>
+            </thead>
+        <tbody>
+        @{ int i = 0;}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(++i).
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PriorityNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @item.DateCreated.Value.ToString("dd MMM yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DownloadFileName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new {id = item.Id}, new {@class = "btn btn-primary btn-sm"}) |
+                    <button type="button" onclick="deleteConfirm(@item.Id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteModal">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+
+<div class="modal fade" id="deleteModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+
+</div>
+<script type="text/javascript">
+
+
+
+    function closeModal() {
+        $('#deleteModal').empty();
+        $('#deleteModal').modal("hide");
+    }
+
+    function deleteConfirm(id) {
+        console.log(`id is ${id}`);
+        $('#deleteModal').append(`
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Delete</h5>
+                                <button type="button" onclick="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" onclick="closeModal()" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="/WorkForces/Delete/${id}" class="btn btn-primary">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                `);
+    }
+
+</script>

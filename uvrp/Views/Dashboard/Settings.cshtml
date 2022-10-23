@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+<input type="hidden" id="addClass" value="1" />
+<div class="mb-3">
+    <h2>Settings</h2>
+</div>
+
+@using (Html.BeginForm("Settings", "Dashboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="row align-items-center">
+    <div class="col-12">
+        @* <div class="alert alert-danger" role="alert"></div> *@
+    </div>
+    
+    <div class="col-md-6">
+        <div class="form-group">
+            Logo:
+            @Html.TextBox("logo", "", new {type = "file", @class = "form-control outline outline lg", required = "required"})
+        </div>
+    </div>
+    @ViewBag.Message
+</div>
+<div class="row">
+    <div class="col-12 text-right">
+        @Html.ActionLink("Back to List", "Index", "", new { @class = "btn btn-outline-primary" })
+        <input type="submit" value="Save" class="btn btn-primary " />
+    </div>
+</div>
+}

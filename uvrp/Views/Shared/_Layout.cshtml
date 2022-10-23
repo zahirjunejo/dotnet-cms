@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - UVRP</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="@Url.Content("~/Content/font-awesome.min.css")" rel="stylesheet">
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/scripts")
+    @Scripts.Render("~/bundles/ckeditor")
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="navbar navbar-expand-lg fixed-top mainNavbar">
+            <div class="container-fluid">
+                <a href="@Url.Action("Index", @User.Identity.IsAuthenticated ? "Dashboard" : "Home")"
+                   title="logo" class="navbar-brand">
+                    <img alt="logo" width="248" src="@Url.Content("~/Content/img/company_logo.svg")">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav mx-auto hide-dashboard" id="navList">
+
+                    </ul>
+
+                    <ul class="nav navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a href="@Url.Action("Logout", "Account")" class="nav-link">
+                                    <i class="fa fa-sign-out fa-lg" ></i>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+@*                             <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Signup" ? "active" : "")">@Html.ActionLink("Create Account", "Signup", "Account", "", new { @class = "nav-link" })</li> *@
+                            <li class="nav-item @(ViewContext.RouteData.Values["Action"].ToString() == "Login" ? "active" : "")">@Html.ActionLink("Login", "Login", "Account", "", new { @class = "nav-link" }) </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <main class="page-content">
+            @RenderBody()
+        </main>
+        <footer class="footer">
+            <div id="Footer" class="container">
+            </div>
+        </footer>
+    </div>
+
+
+    @Scripts.Render("~/bundles/bootstrap")
+   
+    @RenderSection("scripts", required: false)
+<script type="text/javascript">
+
+        function updateValue(value) {
+            // this gets called from the popup window and updates the field with a new value 
+            var jqueryObjectByClass = $(".cke_dialog_ui_input_text")[1];
+            jqueryObjectByClass.value = value;
+        }
+
+        $('a').click(function (e) {
+            $(this).closest('ul').find('li').removeClass('active');
+            $(this).closest('li').addClass('active');
+        })
+        
+        function IsActive(item, navList){
+            let location_slug =  window.location.href.split('/').pop();
+            location_slug = location_slug ? location_slug : 'Index';
+            if(item.HasChild){
+               return item.Slug.includes(location_slug) || navList.filter(x => x.ParentId == item.Id && x.Slug.includes(location_slug) ).length > 0
+            } else {
+               return item.Slug.includes(location_slug)
+            }
+        }
+        
+        $.ajax({
+                type: "GET",
+                url: "/Pages/GetAllPages",
+                success: function (response) {
+                    // response = response.filter(x => x.priority != null);
+                    response = response.sort((a, b) => b.priority - a.priority )
+                    console.log("pages list", response);
+                    
+                    response.forEach(function(item, index){
+                    
+                        
+                        if(item.IsParent == true){
+                            
+                            if(item.HasChild == true){
+                                
+                                $('#navList')
+                                    .append(`<li class="nav-item dropdown ${IsActive(item, response) ? 'active' : ''}">
+                                                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href= ${item.IsCustom? item.Slug:"/Pages/Details/"+item.Slug}  id="${item.Id}" role="button">${item.Title}</a>
+                                                <div class="dropdown-menu" aria-labelledby="${item.Id}" >
+                                                    ${response.filter(x => x.ParentId == item.Id)
+                                                    .map(x => 
+                                                    `<a class="dropdown-item" href= ${x.IsCustom? x.Slug:"/Pages/Details/"+x.Slug}>
+                                                        ${x.Title}
+                                                    </a>`).join(' ')}
+                                                </div>
+                                            </li>`);
+                                
+                                    const $dropdown = $(" .dropdown");
+                                    const $dropdownToggle = $(".dropdown-toggle");
+                                    const $dropdownMenu = $(".dropdown-menu");
+                                    const showClass = "show";
+                                    
+                                    if (this.matchMedia("(min-width: 768px)").matches) {
+                                        $dropdown.hover(
+                                            function () {
+                                                const $this = $(this);
+                                                $this.addClass(showClass);
+                                                $this.find($dropdownToggle).attr("aria-expanded", "true");
+                                                $this.find($dropdownMenu).addClass(showClass);
+                                            },
+                                            function () {
+                                                const $this = $(this);
+                                                $this.removeClass(showClass);
+                                                $this.find($dropdownToggle).attr("aria-expanded", "false");
+                                                $this.find($dropdownMenu).removeClass(showClass);
+                                            }
+                                        );
+                                    } else {
+                                        $dropdown.off("mouseenter mouseleave");
+                                    }
+                                    
+                                    $('.dropdown-toggle')
+                                    .click(function () { var location = $(this).attr('href'); window.location.href = location; return false; });
+                                
+                            } 
+                            else {
+                                $('#navList')
+                                    .append(`<li class="nav-item ${IsActive(item, response)? 'active' : ''}">
+                                                <a class="nav-link" href= ${item.IsCustom? item.Slug:"/Pages/Details/"+item.Slug}>${item.Title}</a>
+                                            </li>`);
+                            }
+                        
+                        }
+                    });
+                },
+                failure: function (response) {
+                    console.log(response);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });            
+       
+        $.ajax({
+            type: 'GET',
+            url: '/Home/GetFooter',
+            success: function(response){
+                if(response.Content){
+                    $('#Footer').html('');
+                    $('#Footer').append(response.Content);
+                }
+            },
+            failure: function(response){
+                console.log(response);
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+        
+    </script>
+</body>
+</html>

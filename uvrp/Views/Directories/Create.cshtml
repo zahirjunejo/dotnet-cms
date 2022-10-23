@@ -1,0 +1,162 @@
+﻿@model uvrp.Models.DirectoriesAddViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+<input type="hidden" id="addClass" value="1" />
+<div class="mb-4">
+    <h2>Create Directory</h2>
+</div>
+
+@using (Html.BeginForm("Create", "Directories", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="row align-items-center">
+    <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrganizationName, htmlAttributes: new { @class = "control-label text-capitalize" })
+
+            @Html.EditorFor(model => model.OrganizationName, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.OrganizationName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Industry, htmlAttributes: new { @class = "control-label text-capitalize" })
+
+            @*@Html.EditorFor(model => model.Industry, new { htmlAttributes = new { @class = "form-control outline" } })*@
+            @Html.DropDownListFor(model => model.Industry, ViewBag.IndustryList as SelectList, new { @class = "form-control outline" })
+            @Html.ValidationMessageFor(model => model.Industry, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Logo, htmlAttributes: new { @class = "control-label text-capitalize" })
+            <input id="Logo" type="file" class="form-control outline lg" name="Logo" required />
+            @ViewBag.UploadMessage
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Website, htmlAttributes: new { @class = "control-label text-capitalize" })
+            @Html.EditorFor(model => model.Website, new { htmlAttributes = new { type = "url", @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.Website, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContactAddress, htmlAttributes: new { @class = "control-label text-capitalize" })
+            @Html.EditorFor(model => model.ContactAddress, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.ContactAddress, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label text-capitalize" })
+            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.PointOfContact, htmlAttributes: new { @class = "control-label text-capitalize" })
+            @Html.EditorFor(model => model.PointOfContact, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.PointOfContact, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailAddress, htmlAttributes: new { @class = "control-label text-capitalize" })
+            @Html.EditorFor(model => model.EmailAddress, new { htmlAttributes = new { @class = "form-control outline", required = "required" } })
+            @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.EditorFor(model => model.IsPhonePrivate, new { htmlAttributes = new { @class = "" } })
+            @Html.LabelFor(model => model.IsPhonePrivate, htmlAttributes: new { @class = "control-label text-capitalize" })
+            @Html.ValidationMessageFor(model => model.IsPhonePrivate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.EditorFor(model => model.IsAddressPrivate, new { htmlAttributes = new { @class = "" } })
+            @Html.LabelFor(model => model.IsAddressPrivate, htmlAttributes: new { @class = "control-label text-capitalize" })
+            @Html.ValidationMessageFor(model => model.IsAddressPrivate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.EditorFor(model => model.IsEmailPrivate, new { htmlAttributes = new { @class = "" } })
+            @Html.LabelFor(model => model.IsEmailPrivate, htmlAttributes: new { @class = "control-label text-capitalize" })
+            @Html.ValidationMessageFor(model => model.IsEmailPrivate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-12 text-right">
+            <input type="submit" onclick="validate()" value="Create" class="btn btn-primary " />
+            @Html.ActionLink("Back to List", "Index", "", new { @class = "btn btn-outline-primary" })
+        </div>
+    </div>
+}
+<script>
+        $('.alert').hide();
+        function validate() {
+
+            $('.alert').empty();
+            $('.alert').show();
+
+            if ($('#OrganizationName').val() == "") {
+                $('.alert').append("Organization name missing.");
+                return;
+            }
+
+            if ($('#Industry').val() == "") {
+                $('.alert').append("Industry missing.");
+                return;
+            }
+
+            if ($('#Logo').prop('files').length == 0) {
+                $('.alert').append("Logo missing.");
+                return;
+            }
+
+            if ($('#Website').val() == "") {
+                $('.alert').append("Website missing.");
+                return;
+            }
+
+            if ($('#ContactAddress').val() == "") {
+                $('.alert').append("Address missing.");
+                return;
+            }
+
+            if ($('#PhoneNumber').val() == "") {
+                $('.alert').append("Phone number missing.");
+                return;
+            }
+
+            if ($('#PointOfContact').val() == "") {
+                $('.alert').append("Person name missing.");
+                return;
+            }
+
+            if ($('#EmailAddress').val() == "") {
+                $('.alert').append("Email missing.");
+                return;
+            }
+
+        }
+</script>

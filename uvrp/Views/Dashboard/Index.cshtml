@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+        <input type="hidden" id="addClass" value="1" />
+        <div id="metricsDiv"></div>
+    
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Dashboard/GetDashboardMetrics",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                let latestPost = response.LatestPost;
+             
+
+                $("#metricsDiv").append(
+                    `<div class="row">
+                        <div class="col-12">
+                              <div class="section-heading without-bar">
+                                <h2>Posts</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card metric">
+                                <div class="icon-div">
+                                    <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                                 </div>
+                                <div class="card-body">
+                                     <h2>${response.Count}</h2>
+                                    <p>Total</p>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card metric">
+ <div class="icon-div">
+                                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                 </div>
+                                <div class="card-body">
+                                     <h2>${response.PublishedCount}</h2>
+                                    <p>Published</p>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card metric">
+ <div class="icon-div">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                 </div>
+                               <div class="card-body">
+                                     <h2>${response.PendingCount}</h2>
+                                    <p>Pending</p>
+                               </div>
+                           </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card metric">
+ <div class="icon-div">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                 </div>
+                                <div class="card-body">
+                                     <h2>${response.TrashCount}</h2>
+                                    <p>Trashed</p>
+                               </div>
+                            </div>
+                        </div>
+                     </div>`
+
+                );
+
+            },
+            failure: function (response) {
+                console.log(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    });
+</script>
+

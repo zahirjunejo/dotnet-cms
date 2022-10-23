@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ba88f5c8109f4691b86125be2a03e01b" Name="Diagram1">
+        <EntityTypeShape EntityType="UVRPModel.Employee" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="UVRPModel.User" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="UVRPModel.Role" Width="1.5" PointX="3.75" PointY="4" />
+        <EntityTypeShape EntityType="UVRPModel.UserRole" Width="1.5" PointX="6" PointY="0.875" />
+        <EntityTypeShape EntityType="UVRPModel.NewsEvent" Width="1.5" PointX="0.75" PointY="3.75" />
+        <AssociationConnector Association="UVRPModel.FK_UserRole_Role" />
+        <AssociationConnector Association="UVRPModel.FK_UserRole_User" />
+        <EntityTypeShape EntityType="UVRPModel.Partners" Width="1.5" PointX="6.375" PointY="3.75" />
+        <EntityTypeShape EntityType="UVRPModel.Contacts" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="UVRPModel.Directory" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="UVRPModel.Comments" Width="1.5" PointX="7.375" PointY="6.75" />
+        <EntityTypeShape EntityType="UVRPModel.Video" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="UVRPModel.WorkForce" Width="1.5" PointX="8.375" PointY="3.75" />
+        <EntityTypeShape EntityType="UVRPModel.Posts" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="UVRPModel.Page" Width="1.5" PointX="9.375" PointY="6.75" />
+        <EntityTypeShape EntityType="UVRPModel.Banner" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="UVRPModel.Masters" Width="1.5" PointX="11.5" PointY="5.5" />
+        <EntityTypeShape EntityType="UVRPModel.Footer" Width="1.5" PointX="12.25" PointY="3.25" />
+        <EntityTypeShape EntityType="UVRPModel.HomePageContent" Width="1.5" PointX="7.375" PointY="10.75" />
+        <EntityTypeShape EntityType="UVRPModel.Template" Width="1.5" PointX="5" PointY="10.75" />
+        <EntityTypeShape EntityType="UVRPModel.Resources" Width="1.5" PointX="9.375" PointY="10.75" />
+        <EntityTypeShape EntityType="UVRPModel.Team" Width="1.5" PointX="11.375" PointY="8.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

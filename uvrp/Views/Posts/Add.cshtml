@@ -1,0 +1,320 @@
+﻿@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<input type="hidden" id="addClass" value="1" />
+<div class="mb-3">
+    <h2>Add New Post</h2>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+            
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group" id="">
+            <label>Title</label>
+            <input id="title" type="text" class="form-control outline" />
+            <small id="titleDiv" class="form-text text-danger"></small>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Category</label>
+            <select name="category" id="category" class="form-control outline">
+            </select>
+            <small id="categoryDiv" class="form-text text-danger"></small>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <textarea class="form-control outline" id="editor" autofocus></textarea>
+            <small id="contentDiv" class="form-text text-danger"></small>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="isRecurring">
+            <label class="form-check-label" for="exampleCheck1">Recurring event?</label>
+        </div>
+    </div>
+
+    <div id="NormalOptions" class="row w-100 mx-0">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Event start date</label>
+                <input type="datetime-local" class="form-control outline" id="eventStartDate" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Event end date</label>
+                <input type="datetime-local" class="form-control outline" id="eventEndDate" />
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div id="recurringOptions" class="row w-100 mx-0">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Start time</label>
+                <input type="time" class="form-control outline" id="startTime" />
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>End time</label>
+                <input type="time" class="form-control outline" id="endTime" />
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="form-group">
+                <label>Days of week:</label>
+                <select id="dow" multiple class="form-control outline">
+                    <option value=0>Sunday</option>
+                    <option value=1>Monday</option>
+                    <option value=2>Tuesday</option>
+                    <option value=3>Wednesday</option>
+                    <option value=4>Thursday</option>
+                    <option value=5>Friday</option>
+                    <option value=6>Saturday</option>
+                </select>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Location</label>
+            <input type="text" class="form-control outline lg" id="location" />
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Event thumbnail</label>
+            <input type="file" class="form-control outline lg" id="imageupload" />
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Website</label>
+            <input type="url" class="form-control outline" id="website" />
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Organization</label>
+            <input type="text" class="form-control outline" id="org" />
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Event contact</label>
+            <input type="text" class="form-control outline" id="event_contact" />
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control outline" id="email" />
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" class="form-control outline" id="phone" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <canvas id="canvas"></canvas>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control outline" name="code">
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="button" id="refresh">Refresh</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row text-right">
+    <div class="col-12">
+        <input class="btn btn-primary mb-2" id="SaveDraftButton" type="button" value="Save Draft" />
+        <input class="btn btn-primary mb-2" id="TrashButton" type="button" value="Move to Trash" />
+        <input class="btn btn-primary mb-2" id="PublishButton" type="button" value="Publish" />
+    </div>
+</div>
+
+     
+        <script>
+            $(document).ready(function () {
+                $("#recurringOptions").hide();
+                $('.alert').hide();
+
+                const captcha = new Captcha($('#canvas'), {
+                    length: 3,
+                    width: 300,
+                    height: 80,
+                    font: 'bold 23px 微软雅黑',
+                    resourceType: 'aA0',
+                    resourceExtra: [],
+                    clickRefresh: true,
+                    autoRefresh: true,
+                    caseSensitive: false
+                });
+
+                $('#refresh').on('click', function () {
+                    captcha.refresh();
+                });
+
+                var formData = new FormData();
+           
+                var editor = CKEDITOR.replace('editor');
+                
+                
+                function disableButtons(){
+                    $('#PublishButton').prop('disabled', true)
+                    $('#TrashButton').prop('disabled', true)
+                    $('#SaveDraftButton').prop('disabled', true)
+                }
+
+                function getPostObject() {
+
+                    console.log($('#dow').val().map(x => parseInt(x)));
+
+                    formData.append('Title', $('#title').val());
+                    formData.append('Content', editor.getData() );
+                    formData.append('Category', $('#category').find(":selected").text());
+                    formData.append('EventStartDate', $('#eventStartDate').val());
+                    formData.append('EventEndDate', $('#eventEndDate').val());
+                    formData.append('Recurring', $('#isRecurring').is(":checked"));
+                    formData.append('Location', $('#location').val());
+                    formData.append('ImageUpload', $('#imageupload').prop('files')[0]);
+                    formData.append('Website', $('#website').val());
+                    formData.append('Organization', $('#org').val());
+                    formData.append('EventContact', $('#event_contact').val());
+                    formData.append('Email', $('#email').val());
+                    formData.append('Phone', $('#phone').val());
+                    let dow = $('#dow').val();
+                    formData.append('DaysOfWeek', dow.map(x => parseInt(x)));
+                    formData.append('startTime', $('#startTime').val());
+                    formData.append('endTime', $('#endTime').val());
+                }
+
+                function sendFormData() {
+
+                    const val = $('input[name="code"]').val();
+                    $('.alert').empty();
+                    $('.alert').show();
+
+                    if ($('#title').val() == "") {
+                        $('.alert').append("Title missing.");
+                        return;
+                    }
+
+                    if (editor.getData() == "") {
+                        $('.alert').append("Content missing.");
+                        return;
+                    }
+
+                    if (!captcha.valid(val)) {
+                        $('.alert').append("Captcha missing.");
+                        return;
+                    }
+
+                    $('.alert').hide();
+
+                    if (formData != null) {
+                        disableButtons();
+                        $.ajax({
+                            type: "POST",
+                            url: "/Posts/AddPost",
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            cache: false,
+                            success: function (response) {
+                                if (response.redirectToUrl) {
+                                    window.location.href = response.redirectToUrl;
+                                }
+                            },
+                            failure: function (response) {
+                                console.log(response);
+                            },
+                            error: function (response) {
+                                console.log(response);
+                            }
+                        });
+                    }
+                }
+
+                $("#SaveDraftButton").click(function () {
+
+                    getPostObject();
+                    formData.append('PostStatus', "Pending");
+                    sendFormData();
+
+                });
+
+                $("#TrashButton").click(function () {
+                    getPostObject();
+                    formData.append('PostStatus', "Deleted");
+                    sendFormData();
+                });
+
+                $("#PublishButton").click(function () {
+                    getPostObject();
+                    formData.append('PostStatus', "Published");
+                    sendFormData();
+                });
+
+                $("#isRecurring").change(function () {
+                    if (this.checked) {
+                        $("#recurringOptions").show();
+                        $("#NormalOptions").hide();
+                    } else {
+                        $("#NormalOptions").show();
+                        $("#recurringOptions").hide();
+                    }
+                });
+
+                $.ajax({
+                            type: "GET",
+                            url: "/Posts/GetCategories",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                                response.forEach(function(item, index){
+                                    $('#category').append(`<option value=${item.Value} >${item.Text}</option>`)
+                                })
+                            },
+                            failure: function (response) {
+                                console.log(response);
+                            },
+                            error: function (response) {
+                                console.log(response);
+                            }
+                 });
+                
+            });
+
+
+
+        </script>
+

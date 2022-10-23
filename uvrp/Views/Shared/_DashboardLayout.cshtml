@@ -1,0 +1,194 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="sidebar-page-wrapper chiller-theme toggled">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fa fa-bars"></i>
+    </a>
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <div id="close-sidebar">
+                    <i class="fa fa-times"></i>
+                </div>
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                         alt="User picture">
+                </div>
+                <div class="user-info">
+                    <span class="user-name">
+                        Hi
+                        <strong>@User.Identity.Name</strong>
+                    </span>
+                    <span class="user-role"> </span>
+                    <span class="user-status">
+                        <i class="fa fa-circle"></i>
+                        <span>Online</span>
+                    </span>
+                </div>
+            </div>
+            <!-- sidebar-header  -->
+            @*<div class="sidebar-search">
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control search-menu" placeholder="Search...">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+            <!-- sidebar-search  -->
+            <div class="sidebar-menu">
+                <ul>
+                    <!--  <li class="sidebar-dropdown">
+        <a href="#">
+            <i class="fa fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+            <span class="badge badge-pill badge-warning">New</span>
+        </a>
+        <div class="sidebar-submenu">
+            <ul>
+                <li>
+                    <a href="#">
+                        Dashboard 1
+                        <span class="badge badge-pill badge-success">Pro</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">Dashboard 2</a>
+                </li>
+                <li>
+                    <a href="#">Dashboard 3</a>
+                </li>
+            </ul>
+        </div>
+    </li>  -->
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Dashboard" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Dashboard")">
+                            <i class="fa fa-user"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Templates" ? "active" : "")">
+                        <a href="@Url.Action("Main", "Templates")">
+                            <i class="fa fa-home"></i>
+                            <span>Pages</span>
+                        </a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Pages" && ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Pages")">
+                            <i class="fa fa-file-text"></i>
+                            <span>Menu items</span>
+                        </a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Masters" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Masters")">
+                            <i class="fa fa-list"></i>
+                            <span>Masters</span>
+                        </a>
+
+                    </li>
+                    
+                       
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Footers" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Footers")">
+                            <i class="fa fa-code"></i>
+                            <span>Footers</span>
+                        </a>
+
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Users" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Users")">
+                            <i class="fa fa-users"></i>
+                            <span>Users</span>
+                        </a>
+
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Posts" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Posts")">
+                            <i class="fa fa-calendar"></i>
+                            <span>News and events</span>
+                        </a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Partners" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Partners")">
+                            <i class="fa fa-user-circle"></i>
+                            <span>Partners</span>
+                        </a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Directories" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Directories")">
+                            <i class="fa fa-list-alt"></i>
+                            <span>Directories</span>
+                        </a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Resources" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Resources")">
+                            <i class="fa fa-list-alt"></i>
+                            <span>Resources</span>
+                        </a>
+                    </li>
+                   <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Teams" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Teams")">
+                            <i class="fa fa-list-alt"></i>
+                            <span>Teams</span>
+                        </a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "WorkForces" ? "active" : "")">
+                        <a href="@Url.Action("Index", "WorkForces")">
+                            <i class="fa fa-building"></i>
+                            <span>Work forces</span>
+                        </a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Videos" ? "active" : "")">
+                        <a href="@Url.Action("Index", "Videos")">
+                            <i class="fa fa-video-camera"></i>
+                            <span>Videos</span>
+                        </a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "ContactUs" ? "active" : "")">
+                        <a href="@Url.Action("Index", "ContactUs")">
+                            <i class="fa fa-id-card"></i>
+                            <span>Contact us</span>
+                        </a>
+                    </li>
+
+                    @* <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Hierarchy" ? "active" : "")"> *@
+                    @*     <a href="@Url.Action("Hierarchy", "Pages")"> *@
+                    @*         <i class="fa fa-sitemap"></i> *@
+                    @*         <span>Page Hierarchy</span> *@
+                    @*     </a> *@
+                    @* </li> *@
+
+                    <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Settings" ? "active" : "")">
+                        <a href="@Url.Action("Settings", "Dashboard")">
+                            <i class="fa fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- sidebar-content  -->
+        @*<div class="sidebar-footer">
+            <a href="@Url.Action("Logout", "Account")">
+                <i class="fa fa-power-off"></i>
+            </a>
+        </div>*@
+    </nav>
+    <!-- sidebar-wrapper  -->
+    <div class="inner-page-content">
+        
+        @RenderBody()
+    </div>
+</div>
+

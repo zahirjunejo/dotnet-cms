@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+@* <div class="banner" style="background: url('@Url.Content("~/Content/img/landing_banner.svg")') no-repeat center;"> *@
+@*     $1$<div class="layer"></div>#1# *@
+@*     <div class="content"> *@
+@*         <h1>Welcome to the<br /> THE UNIVERSITY VIRTUAL RESEARCH PARK</h1> *@
+@*         <div class="scroll-btn"> *@
+@*             <button id="scrollMore" class="btn btn-link btn-sm"> *@
+@*                 <img src="@Url.Content("~/Content/img/scroll_more.svg")" alt="icon" class="img-fluid"/><br/> *@
+@*                 Scroll for More *@
+@*             </button> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+
+<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="text-right section-editBtn for-banner">
+                <a href="/Banners" class="btn btn-link btn-sm">
+                    <i class="fa fa-pencil-square fa-lg"></i>
+                </a>
+        </div>
+    }
+    <ol class="carousel-indicators">
+    </ol>
+    <div class="carousel-inner" id="banners">
+    </div>
+</div>
+
+<div class="common-section" id="moveScroll">
+    @if (User.Identity.IsAuthenticated)
+         {
+             <div class="text-right section-editBtn">
+                     <a href="/HomePageContents" class="btn btn-link btn-sm">
+                         <i class="fa fa-pencil-square fa-lg"></i>
+                     </a>
+             </div>
+         }
+    <div id="HomePageContentContainer" class="container">
+
+    </div>
+</div>
+
+<div class="common-section dark-section">
+     @if (User.Identity.IsAuthenticated)
+     {
+         <div class="text-right section-editBtn">
+                 <a href="/Resources" class="btn btn-link btn-sm">
+                     <i class="fa fa-pencil-square fa-lg"></i>
+                 </a>
+         </div>
+     }
+    <div class="container">
+        <div class="section-heading">
+            <h2>Resources</h2>
+        </div>
+        <div id="resources" class="row align-items-start justify-content-center">
+ 
+        </div>
+    </div>
+</div>
+<div class="common-section">
+         @if (User.Identity.IsAuthenticated)
+         {
+             <div class="text-right section-editBtn">
+                     <a href="/Posts" class="btn btn-link btn-sm">
+                         <i class="fa fa-pencil-square fa-lg"></i>
+                     </a>
+             </div>
+         }
+    <div class="container">
+        <div class="section-heading">
+            <h2>Events & News</h2>
+        </div>
+        <div id="EventsAndNewsDiv" class="row">
+
+        </div>
+        <div class="text-center">
+            <a class="btn btn-outline-primary btn-lg" href="@Url.Action("RequestEvent")">Request Event</a>
+        </div>
+
+    </div>
+</div>
+<div class="common-section gray-section">
+    <div class="container">
+        <div class="section-heading">
+            <h2>Contact Us</h2>
+        </div>
+        <form class="contact-form">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control outline lg" placeholder="Full Name" id="fullName" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control outline lg" placeholder="Last Name" id="lastName" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control outline lg" placeholder="Phone Number" id="phoneNumber" />
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control outline lg" placeholder="Your email address" id="email" />
+                    </div>
+        
+                </div>
+                <div class="col-lg-6">
+                    <textarea style="height: 282px; resize:none;" class="form-control outline" id="message" placeholder="Message"></textarea>
+                </div>
+                <div class="col-12 mt-2">
+                    <button id="SendMessageButton" type="button" class="btn btn-primary btn-md">Send Message</button>
+                </div>
+            </div>
+        </form>
+        <script type="text/javascript">
+                    $("#SendMessageButton").click(function () {
+                        var message = new Object();
+                        message.FullName = $('#fullName').val();
+                        message.LastName = $('#lastName').val();
+                        message.PhoneNumber = $('#phoneNumber').val();
+                        message.Email = $('#email').val();
+                        message.Content = $('#message').val();
+   
+        
+                        if (message != null) {
+                            $.ajax({
+                                type: "POST",
+                                url: "/Home/SaveMessage",
+                                data: JSON.stringify(message),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (response) {
+                                    console.log(response);
+                                    $('#fullName').val("");
+                                    $('#lastName').val("");
+                                    $('#phoneNumber').val("");
+                                    $('#email').val("");
+                                    $('#message').val("");
+                                    alert("Message sent successfully");
+                                },
+                                failure: function (response) {
+                                    console.log(response);
+                                },
+                                error: function (response) {
+                                    console.log(response);
+                                }
+                            });
+        
+                        }
+                    });
+                </script>
+    </div>
+</div>
+<div id="loader" class="overlay">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetAllPublishedPosts",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                response.forEach(function (item, index) {
+                    let childHTML = `<div class="col-md-6 col-lg-4">
+                                            <div class="card newsCard">
+                                                <div class="imgDiv" style="width: 100%;height: 150px;background-color: rgba(230, 230, 229, 0.5);border-radius: 4px;">
+                                                    <img src="/Content/img/${item.ImageUpload}" alt="icon" class="" onerror=this.src="/Content/img/event-placeholder.png" />
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="date"><strong>${item.Category}</strong><span> ${item.CreationDate}</span></div>
+                                                    <div class="card-title"> ${item.Title} </div>
+                                                    <a href="/Posts/Details/${item.Id}" class="btn btn-default btn-sm px-0">Read more</a>
+                                                </div>
+                                            </div>
+                                        </div>`;
+
+                    $("#EventsAndNewsDiv").append(childHTML);
+
+                });
+            },
+            failure: function (response) {
+                console.log(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+        
+        
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetHomePageBanners",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                response.forEach(function (item, index) {
+                    
+                    $(".carousel-indicators").append(`<li data-target="#carouselExampleIndicators" data-slide-to=${index} class=${index == 0? "active":""}></li>`);
+                    
+                    let childHtml = `
+                        <div class="banner carousel-item ${index == 0 ? 'active': ''}" style="background: url('/Content/img/${item.Upload}') no-repeat center;">
+                             <div class="content">
+                                   ${item.Abstract != null? item.Abstract: '' }
+                               </div>
+                         </div>
+                         `;
+                    
+                    $("#banners").append(childHtml);
+                    
+                });
+            },
+            failure: function (response) {
+                console.log(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+        
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetHomePageContent",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response){
+                $("#HomePageContentContainer").append(response.Content);
+            },
+            failure: function(response) {
+                console.log(response);
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+        
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetResources",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response){
+                console.log(response);
+                if(response.length > 0){
+                    $('#resources').html('');
+                    response.forEach( function(item, index){
+                        $('#resources').append(`<div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                                                    <div class="Resource-item mb-3 text-center">
+                                                        <div class="icon-div">
+                                                            <img src="/Content/img/${item.IconImage}" 
+                                                                 alt="icon"
+                                                                 class="img-fluid"
+                                                                 onerror=this.src="/Content/img/resource-placeholder.svg" />
+                                                        </div>
+                                                        <div class="content">
+                                                            ${item.Title}
+                                                        </div>
+                                                    </div>
+                                                </div>`);
+                    });
+                }
+                $('#loader').hide()
+            },
+            failure: function(response) {
+                console.log(response);
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+        
+    });
+</script>

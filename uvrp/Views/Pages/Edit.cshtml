@@ -1,0 +1,160 @@
+﻿@model uvrp.Models.PageViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2>Edit</h2>
+<input type="hidden" id="addClass" value="1" />
+@using (Html.BeginForm("Edit", "Pages", FormMethod.Post, htmlAttributes: new {enctype = "multipart/form-data"} ))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Page</h4>
+        <div class="col-12">
+            <div class="alert alert-danger" style="display: none;" role="alert">
+    
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model=> model.ParentId)
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control outline", required="required" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.priority, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.priority, new { htmlAttributes = new { @class = "form-control outline", required="required" } })
+                @Html.ValidationMessageFor(model => model.priority, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control outline" } })
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        @if (Model.IsCustom)
+        {
+            @Html.HiddenFor(model => model.IsCustom)
+            <div class="form-group">
+                @Html.LabelFor(model => model.Slug, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="checkbox" id="useTemplate">
+                    <label for="useTemplate">Use templates</label>
+                    @Html.EditorFor(model => model.Slug, new {htmlAttributes = new {@class = "form-control outline"}})
+                    @Html.DropDownList("Templates", ViewBag.xList as SelectList, new {@class = "form-control outline", style = "display:none"})
+                    @Html.ValidationMessageFor(model => model.Slug, "", new {@class = "text-danger"})
+                </div>
+            </div> 
+        }
+        else
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Subtitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.HiddenFor(model => model.Subtitle)
+                    <textarea class="form-control" id="editor2"></textarea>
+                    @* @Html.EditorFor(model => model.Content, new {htmlAttributes = new {@class = "form-control"}}) *@
+                </div>
+            </div>
+        
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.HiddenFor(model => model.Content)
+                    <textarea class="form-control" id="editor"></textarea>
+                    @* @Html.EditorFor(model => model.Content, new {htmlAttributes = new {@class = "form-control"}}) *@
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class = "control-label col-md-2">Header image</label>
+                <div class="col-md-10">
+                    @Html.TextBox("HeaderImage", "", new { type = "file", @class = "form-control outline lg", style="color:transparent" })
+                    @Html.ValidationMessageFor(model => model.HeaderImage, "", new { @class = "text-danger" })
+                    @Html.DisplayFor(model => model.HeaderImageName)
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-12 text-right">
+                @Html.ActionLink("Back to List", "Index", "", new { @class = "btn btn-outline-primary" })
+                <input type="submit" onclick="validate()" value="Save" class="btn btn-primary " />
+            </div>
+        </div>
+        
+    </div>
+}
+
+
+@if (!Model.IsCustom)
+{
+    <script type="text/javascript" >
+            var editor = CKEDITOR.replace("editor"); 
+            
+            editor.setData( $('#Content').val() );
+            
+            editor.on('change', function(e){
+                $('#Content').val(editor.getData());
+            });
+            
+            var editor2 = CKEDITOR.replace("editor2");
+            
+            editor2.setData( $('#Subtitle').val());
+            
+            editor2.on('change', function(e){
+                $('#Subtitle').val(editor2.getData());
+            });
+            
+             $('.alert').hide();
+            
+             function validate() {
+         
+                 $('.alert').empty();
+                 $('.alert').show();
+         
+                 if ($('#Title').val() == "") {
+                     $('.alert').append("Title missing.");
+                     return;
+                 }
+         
+             }
+    </script>
+}
+
+
+
+<script type="text/javascript">
+             $(document).ready(function(){
+                 
+                 $('#useTemplate').change(function() {
+                   if(this.checked){
+                     $('#Templates').show();
+                     $('#Slug').hide();
+                   } else {
+                     $('#Templates').hide();
+                     $('#Slug').show();
+                   }
+                 });
+         
+                 $('#Templates').change(function() {
+                     $('#Slug').val(this.value);
+                 });
+                 
+             });
+</script>

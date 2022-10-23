@@ -1,0 +1,25 @@
+﻿@model uvrp.Role
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+<input type="hidden" id="addClass" value="1" />
+<h2>Role Details</h2>
+    <div class="row align-items-center">
+        <div class="col-12 mb-3">
+            <h4 class="mb-0 text-capitalize">@Html.DisplayNameFor(model => model.name)</h4>
+            <p class="mb-0">@Html.DisplayFor(model => model.name)</p>
+        </div>
+        <div class="col-12">
+            <h4 class="mb-0 text-capitalize">@Html.DisplayNameFor(model => model.type)</h4>
+            <p class="mb-0">@Html.DisplayFor(model => model.type)</p>
+        </div>
+    </div>
+
+<div class="row">
+    <div class="col-12 text-right">
+        @Html.ActionLink("Back to List", "Index", "", new { @class = "btn btn-outline-primary" })
+        @Html.ActionLink("Edit", "Edit", new { id = Model.id }, new { @class = "btn btn-primary" })
+    </div>
+</div>

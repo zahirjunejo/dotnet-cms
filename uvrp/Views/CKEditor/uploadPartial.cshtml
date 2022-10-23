@@ -1,0 +1,22 @@
+﻿@model System.Collections.Generic.IEnumerable<uvrp.Models.ImagesViewModel>
+
+@{
+    Layout = null;
+}
+
+@foreach (var image in Model)
+{
+    <a href="#" class="returnImage" data-url="@image.Url">
+        <img src="@image.Url" alt="Hejsan" id="#image" data-source="@image.Url" width="200" height="200"/>
+    </a>
+}
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".returnImage").click("click", function (e) {
+            var urlImage = $(this).attr("data-url");
+            window.opener.updateValue(urlImage);
+            window.close();
+        });
+    });
+</script>

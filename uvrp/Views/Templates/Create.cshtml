@@ -1,0 +1,116 @@
+﻿@model uvrp.Models.TemplateViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2>Create</h2>
+<input type="hidden" id="addClass" value="1" />
+@using (Html.BeginForm("Create", "Templates", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Template</h4>
+        <div class="col-12">
+            <div class="alert alert-danger" role="alert">
+    
+            </div>
+        </div>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.PageName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PageName, new { htmlAttributes = new { @class = "form-control", required="required" } })
+                @Html.ValidationMessageFor(model => model.PageName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Section, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @* @Html.EditorFor(model => model.Section, new { htmlAttributes = new { @class = "form-control" } }) *@
+                @Html.DropDownListFor(model => model.Section,ViewBag.xList as SelectList,  new { @class = "form-control"} )  
+                @Html.ValidationMessageFor(model => model.Section, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.Content)
+                <textarea id="editor"></textarea>
+                @Html.ValidationMessageFor(model => model.Content, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.TextBox("Image", "", new { type = "file", @class = "form-control outline outline lg" })
+                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        
+
+        
+       <div class="row">
+            <div class="col-12 text-right">
+                @Html.ActionLink("Back to List", "Main", "", new { @class = "btn btn-outline-primary" })
+                <input type="submit" onclick="validate()" value="Create" class="btn btn-primary " />
+            </div>
+        </div>
+        
+    </div>
+}
+
+<script type="text/javascript" >
+
+    $('.alert').hide();
+    function validate() {
+
+        $('.alert').empty();
+        $('.alert').show();
+
+        if ($('#PageName').val() == "") {
+            $('.alert').append("Page name missing.");
+            return;
+        }
+
+    }
+
+    var editor = CKEDITOR.replace("editor"); 
+   
+    editor.on('change', function(e){
+        $('#Content').val(editor.getData());
+    })
+    
+</script>
+
+
+@* <script type="text/javascript"> *@
+@* $(document).ready(function(){ *@
+@*      *@
+@*      $('#divA').show(); *@
+@*      $('#divB').hide(); *@
+@*      *@
+@*     $("#Section").change(function(){ *@
+@*         console.log("dsfdsfs"); *@
+@*         $(this).find("option:selected").each(function(){ *@
+@*             var optionValue = $(this).attr("value"); *@
+@*             console.log(optionValue); *@
+@*             if(optionValue == "HeaderImage"){ *@
+@*                 $('#divA').hide(); *@
+@*                 $('#divB').show(); *@
+@*             } else{ *@
+@*                 $('#divA').show(); *@
+@*                 $('#divB').hide(); *@
+@*             } *@
+@*         }); *@
+@*     }); *@
+@* }); *@
+@* </script> *@

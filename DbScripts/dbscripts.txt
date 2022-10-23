@@ -1,0 +1,102 @@
+
+
+
+CREATE TABLE dbo.Page
+(
+	Id int not null identity primary key,
+    Title varchar(50),
+	Subtitle varchar(150),
+    Content varchar(max),
+	HeaderImage varchar(100),
+	Slug varchar(200),
+	IsParent bit,
+	ParentId int,
+	HasChild bit
+);
+
+CREATE TABLE dbo.Banner
+(
+	Id int not null identity primary key,
+	Title varchar(50),
+    Type varchar(20),
+	Upload varchar(50),
+	AltText varchar(100),
+	Abstract text,
+	IsActive bit,
+	DateAdded varchar(55)
+);
+
+alter table dbo.Banner
+add PageId int,
+    IsHome bit;
+
+
+CREATE TABLE dbo.Masters
+(
+	Id int not null identity primary key,
+    Text varchar(50),
+	Value varchar(50),
+    Type varchar(50)
+);
+
+alter table dbo.Banner
+add Status bit;
+
+alter table dbo.Page
+add IsCustom bit,
+    IsActive bit;
+
+CREATE TABLE dbo.Footer
+(
+	Id int not null identity primary key,
+    Content varchar(max)
+);
+
+CREATE TABLE dbo.HomePageContent
+(
+	Id int not null identity primary key,
+    Content varchar(max)
+);
+
+CREATE TABLE dbo.Template
+(
+	Id int not null identity primary key,
+	PageName varchar(50),
+	Section varchar(50),
+	Content varchar(max),
+	IsImage bit
+);
+
+CREATE TABLE dbo.Resources
+(
+	Id int not null identity primary key,
+	Title varchar(50),
+	Description varchar(50),
+	IconImage varchar(100)
+);
+
+CREATE TABLE dbo.Team
+(
+	Id int not null identity primary key,
+	Name varchar(50),
+	Designation varchar(50),
+	Image varchar(100)
+);
+
+alter table dbo.Template
+add Image varchar(100);
+
+alter table dbo.Posts alter column Title varchar(200);
+alter table dbo.Posts alter column Category varchar(200);
+alter table dbo.Posts alter column PostStatus varchar(200);
+alter table dbo.Posts alter column Category varchar(200);
+
+alter table dbo.partners add name varchar(30), description varchar(50);
+alter table dbo.Partners alter column name varchar(200);
+alter table dbo.Partners alter column description varchar(200);
+
+alter table dbo."User" add SaltKey varchar(250);
+alter table dbo.Team alter column Designation varchar(200);
+alter table dbo.page add priority int;
+
+alter table dbo.partners add CompanyHomePage varchar(200);

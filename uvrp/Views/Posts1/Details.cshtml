@@ -1,0 +1,138 @@
+﻿@model uvrp.Posts
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Posts</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PostStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PostStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventStartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventStartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventEndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventEndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Recurring)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Recurring)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventLocation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventLocation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageUpload)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImageUpload)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Website)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Website)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Organization)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Organization)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventContact)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventContact)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

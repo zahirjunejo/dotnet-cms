@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Templates";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<h2>Templates</h2>
+<input type="hidden" id="addClass" value="1" />
+
+<ul class="listing">
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Home page", "Main", "Banners")
+    </li>
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("About", "Index", new {id = "About"})
+    </li>
+    
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("News and events", "Index", new {id = "EventsNews"})
+    </li>
+    
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Resources", "Index", new {id = "Resources"})
+    </li>
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Killeen community", "Index", new {id = "KilleenCommunity"})
+    </li>
+
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Partners", "Index", new {id = "Partners"})
+    </li>
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Directory", "Index", new {id = "Directory"})
+    </li>
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Workforce", "Index", new {id = "Workforce"})
+    </li>
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Contact Us", "Index", new {id = "ContactUs"})
+    </li>
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("University and Research", "Index", new {id = "UniversityResearch"})
+    </li>
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Data and Reports", "Index", new {id = "DataReports"})
+    </li>
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Videos", "Index", new {id = "Videos"})
+    </li>
+
+    <li>
+        <i class="fa fa-file-text"></i>
+        @Html.ActionLink("Error", "Index", new {id = "Error"})
+    </li>
+    
+</ul>
